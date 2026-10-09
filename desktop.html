@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!-- DOCTYPE tells the browser "this is a modern HTML5 page". Always the first line. -->
+<html lang="en">
+<!-- <html> wraps the whole page. lang="en" says the page is in English (helps screen readers). -->
+<head>
+  <meta charset="utf-8">
+  <!-- charset="utf-8" lets the page show any letter or symbol correctly. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- viewport makes the page fit the screen width instead of being zoomed out. -->
+  <title>UMBC Basic Needs Impact Viewer - Desktop</title>
+  <!-- title is the text shown on the browser tab. -->
+
+  <style>
+    /* <style> holds CSS: the rules that control how things LOOK. */
+
+    /* "*" means every element. box-sizing makes width include padding + border,
+       so sizes behave the way you expect. */
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;                          /* remove the browser's default outer space */
+      font-family: system-ui, sans-serif; /* use the computer's normal font */
+      background: #fff;                   /* white page background */
+      color: #000;                        /* black text */
+    }
+
+    /* ---------- HEADER (top bar) ---------- */
+    header {
+      display: flex;                      /* flex = put children in a row */
+      justify-content: space-between;     /* logo on far left, menu button on far right */
+      align-items: center;                /* line them up vertically in the middle */
+      background: #000;                   /* black bar */
+      color: #fff;                        /* white text on it */
+      padding: 12px 32px;                 /* space inside: 12px top/bottom, 32px left/right */
+    }
+    .brand { display: flex; align-items: center; gap: 12px; } /* gap = space between logo and text */
+    .wordmark { font-size: 28px; font-weight: 700; letter-spacing: 2px; }
+
+    /* A "class" (the .name) is a label you attach to elements with class="name". */
+    .menu-btn {
+      background: none; border: 2px solid #fff; color: #fff;
+      min-width: 44px; min-height: 44px;  /* 44px is the recommended minimum tap/click size */
+      cursor: pointer;                    /* shows the pointing-hand cursor */
+    }
+
+    /* ---------- PAGE CONTENT ---------- */
+    main { max-width: 1160px; margin: 0 auto; padding: 32px; } /* margin auto = center it */
+    .screen { display: none; }            /* every screen is hidden...        */
+    .screen.active { display: block; }    /* ...except the one marked "active" */
+    h1 { margin: 0 0 4px; font-size: 32px; }
+
+    /* ---------- MENU / LOGIN SCREEN ---------- */
+    .menu-item {
+      display: block; width: 100%; text-align: left;   /* each item fills the full row */
+      background: none; border: 0; border-bottom: 1px solid #000;
+      padding: 16px 4px; font-size: 18px; font-weight: 600; cursor: pointer;
+    }
+    /* "#menu.active" = the Welcome screen while it is showing.
+       It is more specific than ".screen.active", so display:flex wins over display:block. */
+    #menu.active {
+      display: flex;                      /* flex lets us push the last item to the bottom */
+      flex-direction: column;             /* stack children top to bottom */
+      min-height: 70vh;                   /* vh = % of window height; makes the screen tall enough to have a "bottom" */
+    }
+    .menu-last {
+      border-top: 2px solid #000;         /* thick line above the Log in / Log out item */
+      border-bottom: 0;                   /* no line below, it is the last item */
+      margin-top: auto;                   /* auto = take all the leftover space above, which pushes it to the bottom */
+    }
+
+    /* A "panel" is a white box with a black outline. */
+    .panel { border: 2px solid #000; border-radius: 8px; padding: 20px; margin-top: 24px; }
+
+    /* "row" lays children side by side; wrap lets them drop to the next line if too narrow. */
+    .row { display: flex; gap: 24px; flex-wrap: wrap; }
+    .grow { flex: 1; min-width: 260px; }  /* flex:1 = share leftover space equally */
+    .wide { flex: 3; min-width: 360px; }  /* flex:3 = take 3x the share (chart is wider than the side card) */
+
+    /* "stack" = children go top-to-bottom (column) with 24px between them. Used for the filter panel. */
+    .stack { display: flex; flex-direction: column; gap: 24px; }
+    .stack select { width: 100%; }        /* make each dropdown fill the panel's width */
+
+    /* Empty table cells have no text, so give them a minimum height or the rows would collapse flat. */
+    td { height: 44px; }
+
+    /* ---------- FORM CONTROLS ---------- */
+    label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 600; }
+    select, button.btn {
+      min-height: 44px; padding: 0 14px; font: inherit;
+      border: 2px solid #000; border-radius: 6px; background: #fff; color: #000;
+    }
+    button.btn { font-weight: 700; cursor: pointer; }
+    button.solid { background: #000; color: #fff; } /* "solid" = black button, white text */
+
+    /* ---------- TABLES ---------- */
+    .scroll { overflow-x: auto; }         /* if a table is too wide, let it scroll sideways */
+    table { width: 100%; border-collapse: collapse; } /* collapse = single lines between cells */
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #000; }
+    th { background: #000; color: #fff; } /* black header row */
+  </style>
+</head>
+
+<body>
+  <!-- <body> holds everything you can see on the page. -->
+
+  <header>
+    <!-- <header> = the top bar of the page. -->
+    <div class="brand">
+      <!-- Inline SVG = a little drawing made from code. This is the shield logo placeholder. -->
+      <svg width="28" height="32" viewBox="0 0 28 32" aria-hidden="true">
+        <path d="M14 1 2 5v10c0 8 5 13 12 16 7-3 12-8 12-16V5z" fill="none" stroke="#fff" stroke-width="2"/>
+      </svg>
+      <span class="wordmark">UMBC</span>
+    </div>
+    <!-- The hamburger button takes you back to the Menu screen.
+         aria-label gives screen readers a name for a button that only shows an icon. -->
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">&#9776;</button>
+  </header>
+
+  <main>
+    <!-- <main> = the main content of the page. -->
+
+    <!-- ===== SCREEN 1: MENU / LOGIN (the first thing you see) ===== -->
+    <!-- class="screen active" = a screen that starts visible. Only ONE screen should have "active". -->
+    <section class="screen active" id="menu">
+      <h1>Menu</h1>
+      <!-- data-go="..." says which screen the button opens (the script at the bottom reads it).
+           These two links are optional. Delete them if you want the screen to say only "Welcome". -->
+      <button class="menu-item" data-go="dashboard">Dashboard</button>
+      <button class="menu-item" data-go="importexport">Import / Export</button>
+      <!-- Display only: no data-go and no script, so it just sits there as a design.
+           CSS (.menu-last) pushes it to the bottom of the screen. -->
+      <button class="menu-item menu-last">Log in / Log out</button>
+    </section>
+
+    <!-- ===== SCREEN 2: INFO / DASHBOARD ===== -->
+    <!-- No "active" here, so it starts hidden until someone picks Dashboard from the menu. -->
+    <section class="screen" id="dashboard">
+      <h1>Student Services Dashboard</h1>
+
+      <div class="row">
+        <div class="panel wide">
+          <!-- viewBox sets the drawing's own coordinate system; width:100% makes it scale to fit. -->
+          <svg viewBox="0 0 640 240" style="width:100%;height:auto" role="img"
+               aria-label="Placeholder line chart of service usage over time">
+            <!-- axes: M = move to, H = horizontal line to, V = vertical line to -->
+            <path d="M40 20V200H620" fill="none" stroke="#000" stroke-width="2"/>
+            <!-- polyline connects points in order; each pair is "x,y" (y grows DOWNWARD in SVG) -->
+            <polyline points="40,90 120,100 200,170 280,160 360,120 440,100 520,70 600,50"
+                      fill="none" stroke="#000" stroke-width="3"/>
+            <!-- stroke-dasharray makes a dashed line, so the 2nd series is distinguishable without color -->
+            <polyline points="40,120 120,130 200,180 280,165 360,140 440,120 520,95 600,80"
+                      fill="none" stroke="#000" stroke-width="3" stroke-dasharray="6 4"/>
+            <text x="330" y="232" font-size="12" text-anchor="middle">Date</text>
+          </svg>
+          <p>&mdash; Data 1 &nbsp;&nbsp; - - Data 2</p>
+        </div>
+
+        <!-- Side card: holds the two filters -->
+        <aside class="panel grow stack">
+          <!-- A <label> wrapped around a control lets people click the text to focus the control. -->
+          <label>Department
+            <select><option>All departments</option></select>
+          </label>
+          <label>Date
+            <select><option>All dates</option></select>
+          </label>
+        </aside>
+      </div>
+
+      <!-- Data table. thead = header row group, tbody = body rows, th = header cell, td = data cell. -->
+      <div class="panel scroll">
+        <table>
+          <thead>
+            <!-- The last three <th></th> cells are the empty columns: black header, no text yet. -->
+            <tr><th>Department</th><th>Information</th><th></th><th></th><th></th></tr>
+          </thead>
+          <tbody>
+            <!-- Each <td></td> is a cell. Copy a <tr> line to add more rows. -->
+            <tr><td>---</td><td>---</td><td></td><td></td><td></td></tr>
+            <tr><td>---</td><td>---</td><td></td><td></td><td></td></tr>
+            <tr><td>---</td><td>---</td><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== SCREEN 3: IMPORT / EXPORT ===== -->
+    <section class="screen" id="importexport">
+      <h1>Import / Export</h1>
+
+      <div class="row">
+        <div class="panel grow">
+          <h2>Import</h2>
+          <p>Upload a data file</p>
+          <!-- type="file" gives a built-in "choose a file" picker. -->
+          <input type="file" aria-label="Choose a file to import">
+          <p><button class="btn solid">Import</button></p>
+        </div>
+        <div class="panel grow">
+          <h2>Export</h2>
+          <p>Download the data</p>
+          <label>Format <select><option>CSV</option></select></label>
+          <p><button class="btn solid">Export</button></p>
+        </div>
+      </div>
+
+      <div class="panel scroll">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h2 style="margin:0">Logs</h2>
+          <button class="btn">Filter</button>
+        </div>
+        <table>
+          <thead><tr><th>Department</th><th>Date</th><th>Action</th><th>User</th></tr></thead>
+          <tbody>
+            <tr><td>---</td><td>---</td><td>Import / Export</td><td>---</td></tr>
+            <tr><td>---</td><td>---</td><td>Import / Export</td><td>---</td></tr>
+            <tr><td>---</td><td>---</td><td>Import / Export</td><td>---</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // <script> holds JavaScript: the code that makes the page DO things.
+    // This script only switches between screens. There is no login code, since login is display only.
+
+    // A function is a reusable block of code with a name. This one shows exactly one screen.
+    function show(id) {
+      // querySelectorAll finds every element matching the CSS selector; forEach loops over them.
+      // Hide every screen...
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      // ...then show only the one we asked for. getElementById finds the element whose id matches.
+      document.getElementById(id).classList.add('active');
+    }
+
+    // The hamburger button in the header goes to the Menu screen.
+    // addEventListener = "run this code when something happens" (here, a click).
+    document.getElementById('menuBtn').addEventListener('click', () => show('menu'));
+
+    // Every button with a data-go attribute opens the screen it names.
+    // btn.dataset.go reads that attribute's value, e.g. "dashboard".
+    document.querySelectorAll('[data-go]').forEach(btn => {
+      btn.addEventListener('click', () => show(btn.dataset.go));
+    });
+  </script>
+</body>
+</html>
