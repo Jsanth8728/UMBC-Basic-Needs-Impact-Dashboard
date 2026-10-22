@@ -9,6 +9,7 @@ or browser-loaded Babel scripts are needed.
 Use Node.js 22.12+ (Node.js 24 is supported). From this folder:
 
 ```sh
+cd "Front End"
 npm install
 npm run dev
 ```
@@ -37,3 +38,20 @@ npm run preview
 
 Deploy the contents of `dist` to a static web server and visit `/HomePage.html`.
 The production files include React, so visitors do not fetch it from a CDN.
+
+## Run with Docker
+
+From the repository root, build and start the services:
+
+```sh
+docker compose up --build -d
+```
+
+Open `http://localhost:5173/`. The frontend container serves Vite's production
+build through Nginx. Run the same command after changing frontend files to
+rebuild the image, then refresh the browser (Ctrl+F5 if it shows old content).
+
+Import images from React components (for example,
+`import logo from "./images/UMBC-primary-logo-CMYK-on-black.png"` and
+`<img src={logo} alt="UMBC" />`) so Vite includes them in the production build.
+The `Front End` directory is the build root, not part of the website URL.
