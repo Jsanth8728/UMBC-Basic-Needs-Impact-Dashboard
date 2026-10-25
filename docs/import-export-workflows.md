@@ -19,8 +19,8 @@ but clears on refresh. Download URLs are created on demand and revoked after
 use. Times are displayed in the browser's local timezone. These are selections,
 not confirmed server uploads; the page labels that distinction.
 
-`Front End/ImportExportPage.js` contains the layout and imports the existing
-Maryland flag image through Vite. `Front End/ImportExportPage.css` styles only
+`Front End/src/pages/ImportExportPage.js` contains the layout and imports the existing
+Maryland flag image through Vite. `Front End/src/pages/ImportExportPage.css` styles only
 the heading, flag, cards, controls, history, and preview. The heading uses a dark
 gradient over the flag to keep the title readable with UMBC gold accents.
 
@@ -39,6 +39,9 @@ the pending row. The User column is unassigned until account integration exists.
 Future implementation should use the meeting notes, SRS, and SDD to finalize
 source layouts, export formats, data handling, and permissions.
 
-Run tests from `Front End` with `node --test spreadsheetPreview.test.js spreadsheetExport.test.js`,
+Spreadsheet helpers live in `Front End/src/utils`, UI components in
+`Front End/src/components`, and their tests in `Front End/tests`.
+
+Run tests from `Front End` with `npm test`,
 then build with `npm run build`. Rebuild Docker from the repository
 root with `docker compose up --build -d --no-deps frontend`.

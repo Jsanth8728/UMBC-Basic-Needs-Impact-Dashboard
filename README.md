@@ -19,11 +19,27 @@ Use the server URL instead of opening the HTML file directly from disk.
 
 ## Files
 
-- `HomePage.html`: HTML shell and CSS/script references.
-- `HomePage.css`: page styling.
-- `HomePage.js`: React page component, using JSX inside a `.js` file.
-- `main.js`: mounts the page component in the `root` element.
-- `vite.config.js`: enables JSX in `.js` files and keeps `HomePage.html` as the build entry.
+The `Front End` directory is organized as follows:
+
+```text
+Front End/
+  HomePage.html          HTML shell and application entry
+  src/
+    main.js              Mounts the React application
+    pages/               Page components and their CSS
+    components/          UI components such as export and preview panels
+    utils/               Spreadsheet preview and export helpers
+    assets/images/       Images imported by components
+  tests/                 Spreadsheet helper tests
+  vite.config.js         Vite configuration and JSX support
+  package.json           Dependencies and npm scripts
+  package-lock.json      Dependency lockfile
+  Dockerfile             Frontend container build
+  nginx.conf             Production server configuration
+  dist/                  Generated production build
+```
+
+`HomePage.html` loads `src/main.js`; page components import their own CSS.
 
 New components can be written in `.js` files and imported where needed. The
 automatic JSX runtime means components do not need `import React` just for JSX;
@@ -35,6 +51,8 @@ import hooks such as `useState` from `react` when you use them.
 npm run build
 npm run preview
 ```
+
+Run the frontend tests from `Front End` with `npm test`.
 
 Deploy the contents of `dist` to a static web server and visit `/HomePage.html`.
 The production files include React, so visitors do not fetch it from a CDN.
@@ -52,6 +70,6 @@ build through Nginx. Run the same command after changing frontend files to
 rebuild the image, then refresh the browser (Ctrl+F5 if it shows old content).
 
 Import images from React components (for example,
-`import logo from "./images/UMBC-primary-logo-CMYK-on-black.png"` and
+`import logo from "../assets/images/UMBC-primary-logo-CMYK-on-black.png"` in a page and
 `<img src={logo} alt="UMBC" />`) so Vite includes them in the production build.
 The `Front End` directory is the build root, not part of the website URL.

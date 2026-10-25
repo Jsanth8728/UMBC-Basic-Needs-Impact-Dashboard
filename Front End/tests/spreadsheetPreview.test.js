@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { utils, write } from "xlsx";
-import { createSpreadsheetPreview } from "./spreadsheetPreview.js";
+import { createSpreadsheetPreview } from "../src/utils/spreadsheetPreview.js";
 
 test("CSV preview preserves quoted commas, line breaks, and leading zeros", () => {
   const buffer = new TextEncoder().encode('Name,Value\r\n"Meals, donated",0012\r\n"Two\nlines",0');

@@ -1,6 +1,6 @@
-﻿import marylandFlag from "./images/maryland-flag-header.jpg";
+﻿import marylandFlag from "../assets/images/maryland-flag-header.jpg";
 import { useEffect, useRef, useState } from "react";
-import FilePreviewDialog from "./FilePreviewDialog.js";
+import FilePreviewDialog from "../components/FilePreviewDialog.js";
 import "./ImportExportPage.css";
 
 const historyDateFormat = new Intl.DateTimeFormat(undefined, {
@@ -45,7 +45,7 @@ export default function ImportExportPage({ history, onHistoryChange }) {
     setFileMessage("Preparing preview...");
     try {
       const [{ createSpreadsheetPreview }, buffer] = await Promise.all([
-        import("./spreadsheetPreview.js"), file.arrayBuffer(),
+        import("../utils/spreadsheetPreview.js"), file.arrayBuffer(),
       ]);
       const sheets = createSpreadsheetPreview(buffer, file.name.split(".").pop().toLowerCase());
       if (version !== selectionVersion.current) return;

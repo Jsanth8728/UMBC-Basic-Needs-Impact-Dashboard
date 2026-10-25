@@ -16,7 +16,7 @@ export default function ExportPanel({ history }) {
     setMessage("");
     try {
       const [{ convertSpreadsheet }, buffer] = await Promise.all([
-        import("./spreadsheetExport.js"), selected.file.arrayBuffer(),
+        import("../utils/spreadsheetExport.js"), selected.file.arrayBuffer(),
       ]);
       const result = convertSpreadsheet(buffer, selected.file.name.split(".").pop().toLowerCase(), format);
       const url = URL.createObjectURL(new Blob([result.bytes], { type: result.mime }));

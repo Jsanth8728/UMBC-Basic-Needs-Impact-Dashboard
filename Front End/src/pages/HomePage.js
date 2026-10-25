@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import marylandFlag from "./images/maryland-flag-header.jpg";
-import umbcLogo from "./images/UMBC-primary-logo-CMYK-on-black.png";
+import marylandFlag from "../assets/images/maryland-flag-header.jpg";
+import umbcLogo from "../assets/images/UMBC-primary-logo-CMYK-on-black.png";
+import "./HomePage.css";
 import ImportExportPage from "./ImportExportPage.js";
 
 const pages = [

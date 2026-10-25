@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { read, utils, write } from "xlsx";
-import { convertSpreadsheet } from "./spreadsheetExport.js";
+import { convertSpreadsheet } from "../src/utils/spreadsheetExport.js";
 
 test("Excel export includes complete CSV data beyond preview limits", () => {
   const csv = "Name,Value\n" + Array.from({ length: 25 }, (_, index) => `Measure ${index},${index}`).join("\n");
