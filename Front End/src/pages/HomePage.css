@@ -4,7 +4,7 @@
   --umbc-gray: #636466;
   font-family: Arial, Helvetica, sans-serif;
   color: var(--umbc-black);
-  background: #ffffff;
+  background: #f6f6f5;
 }
 * { box-sizing: border-box; }
 body { margin: 0; }

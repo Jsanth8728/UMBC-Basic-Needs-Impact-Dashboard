@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import marylandFlag from "../assets/images/maryland-flag-header.jpg";
 import umbcLogo from "../assets/images/UMBC-primary-logo-CMYK-on-black.png";
 import "./HomePage.css";
 import ImportExportPage from "./ImportExportPage.js";
+import DashboardOverview from "./DashboardOverview.js";
 
 const pages = [
   { hash: "#home", label: "Home" },
@@ -88,10 +89,7 @@ export default function HomePage() {
       </header>
       <main id="main-content" className="page-content" tabIndex={-1} ref={mainRef}>
         {page === "#import-export" ? <ImportExportPage history={fileHistory} onHistoryChange={setFileHistory} /> : (
-          <>
-            <p className="page-eyebrow">UMBC Basic Needs</p>
-            <h1>Impact Dashboard</h1>
-          </>
+          <DashboardOverview />
         )}
       </main>
     </div>
