@@ -1,0 +1,23 @@
+.month-picker { position: relative; min-width: 0; }
+.month-picker-label { display: block; margin-bottom: 7px; font-size: 11px; font-weight: 700; color: #636466; }
+.month-picker-control { display: flex; align-items: center; border: 1px solid #d5d5d5; border-radius: 4px; background: #fff; }
+.month-picker button { color: #202020; background: transparent; border: 0; cursor: pointer; }
+.month-picker .month-picker-arrow { min-width: 32px; min-height: 40px; padding: 4px 8px; font-size: 23px; line-height: 1; border-radius: 3px; }
+.month-picker .month-picker-trigger { min-width: 125px; min-height: 40px; padding: 8px 5px; font-size: 13px; white-space: nowrap; flex: 1; }
+.month-picker button:hover:not(:disabled) { background: #fff3d6; }
+.month-picker button:disabled { opacity: .3; cursor: default; }
+.month-picker-calendar { position: absolute; top: calc(100% + 8px); right: 0; width: 264px; max-width: calc(100vw - 40px); padding: 12px; background: white; border: 1px solid #ddd; border-top: 3px solid #fdb515; border-radius: 6px; box-shadow: 0 8px 24px #0002; z-index: 4; }
+.month-picker-year { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+.month-picker .month-picker-year input { min-width: 0; width: 100px; min-height: 40px; text-align: center; font-size: 15px; font-weight: 700; }
+.month-picker-months { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+.month-picker-months button { min-height: 40px; border-radius: 4px; font-size: 12px; }
+.month-picker-months button[aria-pressed="true"] { background: #fdb515; font-weight: 700; }
+.month-picker-footer { display: flex; justify-content: space-between; border-top: 1px solid #eee; margin-top: 12px; padding-top: 8px; }
+.month-picker-footer button { min-height: 36px; padding: 6px 10px; border-radius: 4px; font-size: 12px; }
+@media (max-width: 600px) {
+  .dashboard-filters .month-picker { flex: 1 1 calc(50% - 14px); }
+  .month-picker .month-picker-trigger { min-width: 0; font-size: 11px; }
+  .month-picker .month-picker-arrow { min-width: 26px; padding: 4px; }
+  .month-picker-calendar { left: 0; right: auto; }
+  .dashboard-filters .month-picker + .month-picker .month-picker-calendar { left: auto; right: 0; }
+}
