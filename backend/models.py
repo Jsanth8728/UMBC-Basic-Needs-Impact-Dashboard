@@ -1,6 +1,6 @@
 """
 Function:
-    - describes the datbase tables
+    - describes the database tables
 """
 
 from datetime import datetime

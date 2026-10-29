@@ -1,25 +1,23 @@
+"""
+Function:
+    - builds the website and plugs in every feature file
+"""
+
 from fastapi import FastAPI
+
+import login
+# import dashboard
+# import role_management
+# import import_export
 
 app = FastAPI()
 
-@app.get("/api/health")
-def health():
+app.include_router(login.router)
+# app.include_router(dashboard.router)
+# app.include_router(role_management.router)
+# app.include_router(import_export.router)
+
+
+@app.get("/health")
+def health_check():
     return {"status": "ok"}
-
-
-@app.get("/api/dashboard")
-def dashboard():
-    """Dashboard contract scaffold; no database is configured yet.
-
-    Replace this body with authorized, aggregate database queries once the
-    schema and permissions are ready. See docs/dashboard.md for the contract.
-    Never return student identifiers or unapproved stories from this endpoint.
-    """
-    return {
-        "configured": False,
-        "updatedAt": None,
-        "departments": [],
-        "measures": [],
-        "records": [],
-        "stories": [],
-    }
