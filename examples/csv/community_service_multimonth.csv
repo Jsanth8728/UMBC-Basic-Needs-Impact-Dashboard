@@ -1,0 +1,13 @@
+meeting_id,organization_id,meeting_name,event_type,starts_at,ends_at,duration,food_lb,loc
+SAMPLE_G004_202601_01,G004,January Community Food Drive,service,2026-01-17T14:00:00+00:00,2026-01-17T17:00:00+00:00,3,65,Student Center
+SAMPLE_G004_202602_01,G004,February Community Cleanup,service,2026-02-14T14:00:00+00:00,2026-02-14T16:00:00+00:00,2,15,Main Entrance
+SAMPLE_G004_202603_01,G004,March Community Food Drive,service,2026-03-07T14:00:00+00:00,2026-03-07T18:00:00+00:00,4,90,Student Center
+SAMPLE_G004_202603_02,G004,March Volunteer Workshop,workshop,2026-03-21T14:00:00+00:00,2026-03-21T15:30:00+00:00,1.5,10,Room 205
+SAMPLE_G004_202604_01,G004,April Community Cleanup,service,2026-04-18T14:00:00+00:00,2026-04-18T17:00:00+00:00,3,20,Main Entrance
+SAMPLE_G004_202605_01,G004,May Community Food Drive,service,2026-05-09T14:00:00+00:00,2026-05-09T17:30:00+00:00,3.5,75,Student Center
+SAMPLE_G004_202605_02,G004,May Community Cleanup,service,2026-05-23T14:00:00+00:00,2026-05-23T16:00:00+00:00,2,15,Main Entrance
+SAMPLE_G004_202606_01,G004,June Community Food Drive,service,2026-06-13T14:00:00+00:00,2026-06-13T17:00:00+00:00,3,55,Student Center
+SAMPLE_G004_202607_01,G004,July Community Cleanup,service,2026-07-18T14:00:00+00:00,2026-07-18T16:30:00+00:00,2.5,18,Main Entrance
+SAMPLE_G004_202608_01,G004,August Community Food Drive,service,2026-08-08T14:00:00+00:00,2026-08-08T18:00:00+00:00,4,110,Student Center
+SAMPLE_G004_202608_02,G004,August Volunteer Workshop,workshop,2026-08-22T14:00:00+00:00,2026-08-22T16:00:00+00:00,2,15,Room 205
+SAMPLE_G004_202609_01,G004,September Community Food Drive,service,2026-09-12T14:00:00+00:00,2026-09-12T18:00:00+00:00,4,125,Student Center

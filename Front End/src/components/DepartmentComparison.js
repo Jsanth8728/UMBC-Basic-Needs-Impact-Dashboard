@@ -20,17 +20,17 @@ export default function DepartmentComparison({ data, start, end }) {
   function toggle(id) { setHidden(items => items.includes(id) ? items.filter(item => item !== id) : [...items, id]); }
 
   return <section className="dashboard-panel comparison-panel" aria-labelledby="comparison-title">
-    <div className="dashboard-panel-heading"><h2 id="comparison-title">{measure ? `${measure.label}: department comparison` : "Department comparison"}</h2>
+    <div className="dashboard-panel-heading"><h2 id="comparison-title">{measure ? `${measure.label}: organization comparison` : "Organization comparison"}</h2>
       {measure && <label className="measure-control"><span className="dashboard-sr-only">Shared measure</span><select value={measure.id} onChange={event => setMeasureId(event.target.value)}>{measures.map(item => <option key={item.id} value={item.id}>{item.label} ({item.unit})</option>)}</select></label>}
     </div>
     {measure ? <>
-      <div className="comparison-legend" role="group" aria-label="Departments to compare">{comparison.series.map(item => {
+      <div className="comparison-legend" role="group" aria-label="Organizations to compare">{comparison.series.map(item => {
         const index = data.departments.findIndex(d => d.id === item.id);
         return <button type="button" key={item.id} aria-pressed={!hidden.includes(item.id)} onClick={() => toggle(item.id)}><span style={{ background: colors[index % colors.length] }} aria-hidden="true"/>{item.name}</button>;
       })}</div>
       {comparable ? <>
         <div className="comparison-unit">{measure.unit}</div>
-        <svg className="dashboard-trend comparison-chart" viewBox="0 0 760 270" role="img" aria-label={`${measure.label} by department over time, in ${measure.unit}. Exact values in the data table below.`}>
+        <svg className="dashboard-trend comparison-chart" viewBox="0 0 760 270" role="img" aria-label={`${measure.label} by organization over time, in ${measure.unit}. Exact values in the data table below.`}>
           {[0,1,2,3,4].map(i => <g key={i}><line x1="75" x2="715" y1={45+i*43.75} y2={45+i*43.75} stroke="#e5e5e5" strokeDasharray="3 5"/><text x="62" y={49+i*43.75} textAnchor="end">{new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(max*(4-i)/4)}</text></g>)}
           {series.map(item => {
             const index = data.departments.findIndex(d => d.id === item.id);
@@ -41,8 +41,8 @@ export default function DepartmentComparison({ data, start, end }) {
           })}
           {months.map((month, i) => (months.length <= 8 || i % Math.ceil(months.length/8) === 0 || i === months.length-1) && <text key={month} x={x(i)} y="253" textAnchor="middle">{monthLabel(month)}</text>)}
         </svg>
-        <details className="comparison-data"><summary>View data</summary><div className="comparison-table-scroll"><table><caption className="dashboard-sr-only">{measure.label} by month and department ({measure.unit})</caption><thead><tr><th scope="col">Month</th>{series.map(item => <th scope="col" key={item.id}>{item.name}</th>)}</tr></thead><tbody>{months.map((month, index) => <tr key={month}><th scope="row">{monthLabel(month)}</th>{series.map(item => <td key={item.id}>{item.values[index] === null ? <span aria-label="Not reported">—</span> : formatMeasure(item.values[index], measure)}</td>)}</tr>)}</tbody></table></div></details>
-      </> : <p className="comparison-empty">Select departments with overlapping reporting months.</p>}
+        <details className="comparison-data"><summary>View data</summary><div className="comparison-table-scroll"><table><caption className="dashboard-sr-only">{measure.label} by month and organization ({measure.unit})</caption><thead><tr><th scope="col">Month</th>{series.map(item => <th scope="col" key={item.id}>{item.name}</th>)}</tr></thead><tbody>{months.map((month, index) => <tr key={month}><th scope="row">{monthLabel(month)}</th>{series.map(item => <td key={item.id}>{item.values[index] === null ? <span aria-label="Not reported">—</span> : formatMeasure(item.values[index], measure)}</td>)}</tr>)}</tbody></table></div></details>
+      </> : <p className="comparison-empty">Select organizations with overlapping reporting months.</p>}
     </> : <p className="comparison-empty">No shared measures in this period.</p>}
   </section>;
 }

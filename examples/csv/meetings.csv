@@ -1,0 +1,2 @@
+meeting_id,organization_id,meeting_name,event_type,starts_at,ends_at,duration,food_lb,loc
+DEMO_EVENT,DEMO_OFFICE,Demo Food Distribution,service,2026-10-15T14:00:00+00:00,2026-10-15T16:00:00+00:00,2,25,Student Center

@@ -1,25 +1,13 @@
 from fastapi import FastAPI
 
+from dashboard import router as dashboard_router
+from import_export import router as transfer_router
+
 app = FastAPI()
+app.include_router(dashboard_router)
+app.include_router(transfer_router)
+
 
 @app.get("/api/health")
 def health():
     return {"status": "ok"}
-
-
-@app.get("/api/dashboard")
-def dashboard():
-    """Dashboard contract scaffold; no database is configured yet.
-
-    Replace this body with authorized, aggregate database queries once the
-    schema and permissions are ready. See docs/dashboard.md for the contract.
-    Never return student identifiers or unapproved stories from this endpoint.
-    """
-    return {
-        "configured": False,
-        "updatedAt": None,
-        "departments": [],
-        "measures": [],
-        "records": [],
-        "stories": [],
-    }

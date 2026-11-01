@@ -1,0 +1,2 @@
+student_id,first_name,last_name,email,acc_role,department,approved,expire_date
+DEMO_STUDENT,Demo,Student,demo-student@example.edu,student,Computer Science,approved,2027-06-30T23:59:59+00:00

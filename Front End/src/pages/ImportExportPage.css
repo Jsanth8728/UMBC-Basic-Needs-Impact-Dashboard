@@ -64,6 +64,22 @@
   background: #fafafa;
 }
 
+.transfer-workspace select {
+  min-height: 44px;
+  margin: 8px;
+  padding: 8px;
+  background: white;
+  color: black;
+  font: inherit;
+}
+
+.export-workspace .import-button {
+  display: inline-block;
+  align-self: flex-start;
+  margin-top: 12px;
+  text-decoration: none;
+}
+
 .import-workspace {
   display: flex;
   flex-direction: column;
@@ -157,6 +173,9 @@
 }
 
 .history-download {
+  display: inline-block;
+  box-sizing: border-box;
+  text-decoration: none;
   min-height: 44px;
   padding: 8px 14px;
   border: 1px solid var(--umbc-black);

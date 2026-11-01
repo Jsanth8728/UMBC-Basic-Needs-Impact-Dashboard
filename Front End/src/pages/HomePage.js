@@ -13,7 +13,6 @@ const pages = [
 export default function HomePage() {
   const [page, setPage] = useState(() => window.location.hash || "#home");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [fileHistory, setFileHistory] = useState([]);
   const navigationRef = useRef(null);
   const buttonRef = useRef(null);
   const mainRef = useRef(null);
@@ -88,7 +87,7 @@ export default function HomePage() {
         </div>
       </header>
       <main id="main-content" className="page-content" tabIndex={-1} ref={mainRef}>
-        {page === "#import-export" ? <ImportExportPage history={fileHistory} onHistoryChange={setFileHistory} /> : (
+        {page === "#import-export" ? <ImportExportPage /> : (
           <DashboardOverview />
         )}
       </main>

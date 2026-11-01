@@ -1,1 +1,4 @@
 /Front End/tests/
+.venv/
+__pycache__/
+*.pyc
