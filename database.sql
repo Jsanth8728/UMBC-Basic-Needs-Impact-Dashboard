@@ -1,16 +1,11 @@
 -- Entity Tables
-
-CREATE TABLE IF NOT EXISTS sys_admin (
-    admin_id VARCHAR(30) PRIMARY KEY,
-    passwd VARCHAR(255) NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS account (
     student_id VARCHAR(30) PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    acc_role VARCHAR(30) NOT NULL,
+    acc_role VARCHAR(30) NOT NULL
+        CHECK(acc_role IN ('admin', 'staff', 'dean', 'student')),
     department VARCHAR(150),
     ethnicity VARCHAR(100),
     age INTEGER CHECK (age IS NULL OR age >= 0),
@@ -58,18 +53,6 @@ CREATE TABLE IF NOT EXISTS files (
 );
 
 -- Relation Tables
-CREATE TABLE IF NOT EXISTS manages (
-    admin_id VARCHAR(30) NOT NULL
-        REFERENCES sys_admin(admin_id)
-        ON DELETE RESTRICT,
-    student_id VARCHAR(30) NOT NULL
-        REFERENCES account(student_id)
-        ON DELETE CASCADE,
-    added_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-
-    PRIMARY KEY (admin_id, student_id),
-    UNIQUE (student_id)
-);
 
 CREATE TABLE IF NOT EXISTS part_of (
     student_id VARCHAR(30) NOT NULL
@@ -113,43 +96,92 @@ CREATE TABLE IF NOT EXISTS transfers (
     CHECK (sender_id <> recipient_id)
 );
 
--- Test insertions
-
--- 1. System administrators
-INSERT INTO sys_admin (admin_id, passwd) VALUES
-('ADM001', 'hashed_pw_001'),
-('ADM002', 'hashed_pw_002');
-
--- 2. Accounts
+-- Test insertion into tables, not including file imports
+-- 1. Accounts
 INSERT INTO account (
-    student_id, first_name, last_name, email, acc_role,
-    department, ethnicity, age, student_level,
-    is_international, is_first_generation, approved, expire_date
-) VALUES
-('S001', 'Maya', 'Johnson', 'maya@example.edu', 'student',
- 'Computer Science', 'Asian', 20, 'undergraduate',
- FALSE, TRUE, 'approved', '2027-06-30 23:59:59+00'),
-('S002', 'Liam', 'Smith', 'liam@example.edu', 'student',
- 'Biology', 'White', 22, 'undergraduate',
- FALSE, FALSE, 'approved', '2027-06-30 23:59:59+00'),
-('S003', 'Sofia', 'Garcia', 'sofia@example.edu', 'student',
- 'Engineering', 'Hispanic', 24, 'graduate',
- TRUE, TRUE, 'approved', '2027-12-31 23:59:59+00'),
-('S004', 'Noah', 'Williams', 'noah@example.edu', 'student',
- 'Mathematics', 'Black', 21, 'undergraduate',
- FALSE, TRUE, 'pending', '2027-06-30 23:59:59+00'),
-('S005', 'Aisha', 'Patel', 'aisha@example.edu', 'student',
- 'Business', 'Asian', 25, 'graduate',
- TRUE, FALSE, 'approved', '2027-12-31 23:59:59+00');
-
--- 3. Groups
+    student_id,
+    first_name,
+    last_name,
+    email,
+    acc_role,
+    department,
+    ethnicity,
+    age,
+    student_level,
+    is_international,
+    is_first_generation,
+    approved,
+    expire_date
+)
+VALUES
+(
+    'A001',
+    'John',
+    'Smith',
+    'john.smith@example.com',
+    'admin',
+    'Information Technology',
+    'Asian',
+    35,
+    NULL,
+    FALSE,
+    FALSE,
+    'approved',
+    '2027-12-31 23:59:59+00'
+),
+(
+    'S001',
+    'Sarah',
+    'Johnson',
+    'sarah.johnson@example.com',
+    'staff',
+    'Student Affairs',
+    'Black',
+    29,
+    NULL,
+    FALSE,
+    TRUE,
+    'approved',
+    '2027-12-31 23:59:59+00'
+),
+(
+    'D001',
+    'Michael',
+    'Brown',
+    'michael.brown@example.com',
+    'dean',
+    'Engineering',
+    'White',
+    48,
+    NULL,
+    FALSE,
+    FALSE,
+    'pending',
+    '2028-12-31 23:59:59+00'
+),
+(
+    'ST001',
+    'Emily',
+    'Davis',
+    'emily.davis@example.com',
+    'student',
+    'Computer Science',
+    'Hispanic',
+    21,
+    'undergraduate',
+    TRUE,
+    TRUE,
+    'approved',
+    '2027-05-31 23:59:59+00'
+);
+-- 2. Groups
 INSERT INTO groups (organization_id, name, organization_type) VALUES
 ('G001', 'Computer Science Club', 'student_org'),
 ('G002', 'International Student Association', 'student_org'),
 ('G003', 'Student Support Office', 'office'),
 ('G004', 'Community Service Team', 'service');
 
--- 4. Meetings
+-- 3. Meetings
 INSERT INTO meetings (
     meeting_id, organization_id, meeting_name, event_type,
     starts_at, ends_at, duration, food_lb, loc
@@ -170,15 +202,7 @@ INSERT INTO meetings (
  '2026-11-14 09:00:00+00', '2026-11-14 12:00:00+00',
  3.00, 12, 'Main Entrance');
 
--- 5. Admins manage accounts
-INSERT INTO manages (admin_id, student_id, added_at) VALUES
-('ADM001', 'S001', '2026-10-01 10:00:00+00'),
-('ADM001', 'S002', '2026-10-01 10:15:00+00'),
-('ADM001', 'S003', '2026-10-02 11:00:00+00'),
-('ADM002', 'S004', '2026-10-03 09:30:00+00'),
-('ADM002', 'S005', '2026-10-03 10:00:00+00');
-
--- 6. Accounts belong to groups
+-- 4. Accounts belong to groups
 INSERT INTO part_of (student_id, organization_id, joined_at) VALUES
 ('S001', 'G001', '2026-10-01 12:00:00+00'),
 ('S001', 'G002', '2026-10-02 12:00:00+00'),
@@ -189,7 +213,7 @@ INSERT INTO part_of (student_id, organization_id, joined_at) VALUES
 ('S005', 'G002', '2026-10-06 16:00:00+00'),
 ('S005', 'G004', '2026-10-07 16:00:00+00');
 
--- 7. Accounts attend meetings
+-- 5. Accounts attend meetings
 INSERT INTO attends (student_id, meeting_id, attendance_status) VALUES
 ('S001', 'M001', 'attended'),
 ('S001', 'M002', 'registered'),

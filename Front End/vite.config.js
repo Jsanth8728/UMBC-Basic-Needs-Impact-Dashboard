@@ -29,6 +29,9 @@ export default defineConfig(({ command, mode }) => ({
       moduleTypes: { ".js": "jsx" },
     },
   },
+  server: {
+    proxy: { "/api": "http://localhost:8000" },
+  },
   build: {
     rolldownOptions: {
       input: fileURLToPath(new URL("./HomePage.html", import.meta.url)),
