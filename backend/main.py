@@ -4,18 +4,26 @@ Function:
 """
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 import login
-# import dashboard
 # import role_management
-# import import_export
 
 app = FastAPI()
 
+# allows frontend to communicate with backend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(login.router)
-# app.include_router(dashboard.router)
 # app.include_router(role_management.router)
-# app.include_router(import_export.router)
 
 
 @app.get("/health")
