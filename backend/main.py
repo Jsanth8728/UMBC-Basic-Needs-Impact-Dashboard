@@ -23,6 +23,7 @@ app.add_middleware(
 )
 
 app.include_router(login.router)
+app.include_router(login.router, prefix="/api")
 # app.include_router(role_management.router)
 
 

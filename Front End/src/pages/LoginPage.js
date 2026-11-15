@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import "./LoginPage.css";
+import { login } from "../utils/auth.js";
 
 export default function LoginPage({ onLogIn }) {
   const [userId, setUserId] = useState("");
@@ -12,96 +13,41 @@ export default function LoginPage({ onLogIn }) {
     document.title = "Log In | UMBC Basic Needs";
   }, []);
 
-  const handleLogin = async (event) => {
+  async function handleSubmit(event) {
     event.preventDefault();
+    if (loading) return;
     setError("");
     setLoading(true);
-
     try {
-      const response = await fetch("http://localhost:8000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          password: password,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.detail || "Login failed.");
-        return;
-      }
-
-      // Save authentication information
-      localStorage.setItem("access_token", data.access_token);
-      localStorage.setItem("user_id", data.user_id);
-      localStorage.setItem("role", data.role);
-
-      // Notify the parent component
-      onLogIn(data);
-
+      const session = await login(userId.trim(), password);
+      onLogIn(session);
     } catch (error) {
-      console.error("Login error:", error);
-      setError("Unable to connect to the server.");
+      setError(error.message);
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
     <main className="login-page">
       <div className="login-container">
         <section className="login-card" aria-labelledby="login-heading">
-
           <div className="login-heading-row">
             <h1 id="login-heading">Log In</h1>
           </div>
-
-          <form autoComplete="off" onSubmit={handleLogin}>
-
-            <label htmlFor="login-username">
-              Email Address / Username / Campus ID
-            </label>
-
-            <input
-              id="login-username"
-              type="text"
-              value={userId}
-              onChange={(event) => setUserId(event.target.value)}
-              autoCapitalize="none"
-              spellCheck={false}
-              required
-            />
-
-            <label htmlFor="login-password">
-              Password
-            </label>
-
-            <input
-              id="login-password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              autoComplete="current-password"
-              required
-            />
-
-            {error && (
-              <p className="login-error" role="alert">
-                {error}
-              </p>
-            )}
-
+          <form onSubmit={handleSubmit} aria-busy={loading}>
+            <label htmlFor="login-username">Campus ID</label>
+            <input id="login-username" name="username" type="text" autoComplete="username"
+              autoCapitalize="none" spellCheck={false} required maxLength={30}
+              value={userId} onChange={event => setUserId(event.target.value)} disabled={loading} />
+            <label htmlFor="login-password">Password</label>
+            <input id="login-password" name="password" type="password" autoComplete="current-password"
+              required maxLength={1024} value={password}
+              onChange={event => setPassword(event.target.value)} disabled={loading} />
+            {error && <p className="login-error" role="alert">{error}</p>}
             <div className="login-actions">
-              <button type="submit" disabled={loading}>
-                {loading ? "Logging in..." : "Log In"}
-              </button>
+              <button type="submit" disabled={loading}>{loading ? "Logging in…" : "Log In"}</button>
             </div>
-
           </form>
         </section>
       </div>

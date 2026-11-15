@@ -104,7 +104,6 @@ INSERT INTO account (
     first_name,
     last_name,
     email,
-    passwords,
     acc_role,
     department,
     ethnicity,
