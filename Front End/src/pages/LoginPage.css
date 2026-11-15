@@ -50,6 +50,8 @@
   cursor: pointer;
 }
 .login-actions button:hover { background: #508936; }
+.login-actions button:disabled { opacity: 0.65; cursor: wait; }
+.login-error { color: #a31717; font-size: 14px; }
 .login-actions button:focus-visible { outline: 2px solid #1b4c12; outline-offset: 3px; }
 .login-notice { margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; }
 .login-logout-reminder { margin: 0 0 12px; color: #d93636; font-size: 16px; font-weight: 700; }

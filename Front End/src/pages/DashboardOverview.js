@@ -49,7 +49,7 @@ export default function DashboardOverview() {
   const ready = status === "ready";
   const message = !ready ? (status === "loading" ? "Loading dashboard…" : "Unable to load dashboard.") : "No data for this selection.";
   return <div className="impact-dashboard" aria-busy={status === "loading"}>
-    <div className="dashboard-heading"><div><p className="dashboard-eyebrow">UMBC · BASIC NEEDS</p><h1>Impact dashboard</h1></div></div>
+    <div className="dashboard-heading"><div><h1>Impact dashboard</h1></div></div>
     <div className="dashboard-filters"><label>Overview department<select value={department} onChange={e => setDepartment(e.target.value)}><option value="all">All departments</option>{data.departments.map(d => <option value={d.id} key={d.id}>{d.name}</option>)}</select></label><MonthPicker label="From" value={start} max={end || undefined} onChange={setStart}/><MonthPicker label="Through" value={end} min={start || undefined} onChange={setEnd}/><button type="button" className="dashboard-reset" onClick={reset}>Reset</button><button type="button" className="dashboard-button refresh-button" disabled={status === "loading"} onClick={() => setReload(v => v+1)}>Refresh</button></div>
     {invalidRange && <p className="dashboard-error" role="alert">Choose an end month on or after the start month.</p>}
     <section className="dashboard-stats" aria-label="Summary measures">{cards.map(card => {

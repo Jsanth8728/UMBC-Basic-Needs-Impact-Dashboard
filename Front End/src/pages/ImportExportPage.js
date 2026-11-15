@@ -63,7 +63,6 @@ export default function ImportExportPage({ history, onHistoryChange }) {
       <div className="transfer-heading">
         <img className="transfer-flag" src={marylandFlag} alt="" />
         <div className="transfer-heading-text">
-          <p className="page-eyebrow">UMBC Basic Needs</p>
           <h1>Import / Export</h1>
         </div>
       </div>

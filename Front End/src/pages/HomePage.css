@@ -21,9 +21,9 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--umbc-gold); out
 .menu-button:hover, .menu-button[aria-expanded="true"] { background: var(--umbc-black); color: var(--umbc-gold); }
 .menu-icon { font-size: 24px; line-height: 1; width: 24px; text-align: center; }
 .page-menu { position: absolute; z-index: 5; top: calc(100% + 12px); right: 0; width: 240px; max-width: calc(100vw - 40px); margin: 0; padding: 6px 0; list-style: none; background: var(--umbc-black); border-top: 4px solid var(--umbc-gold); box-shadow: 0 8px 24px #0003; }
-.page-menu a { display: block; padding: 14px 20px; color: white; text-decoration: none; font-weight: 700; border-left: 4px solid transparent; }
-.page-menu a:hover, .page-menu a[aria-current="page"] { background: #262626; color: var(--umbc-gold); border-left-color: var(--umbc-gold); }
-.page-menu a:focus-visible { outline-offset: -4px; }
+.page-menu a, .page-menu button { display: block; width: 100%; padding: 14px 20px; color: white; text-decoration: none; font: inherit; font-weight: 700; text-align: left; background: transparent; border: 0; border-left: 4px solid transparent; cursor: pointer; }
+.page-menu a:hover, .page-menu a[aria-current="page"], .page-menu button:hover { background: #262626; color: var(--umbc-gold); border-left-color: var(--umbc-gold); }
+.page-menu a:focus-visible, .page-menu button:focus-visible { outline-offset: -4px; }
 .page-content { max-width: 1280px; margin: 0 auto; padding: 48px 32px; min-height: 70vh; }
 .page-content:focus { outline: none; }
 .page-eyebrow { margin: 0 0 12px; color: var(--umbc-gray); font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }

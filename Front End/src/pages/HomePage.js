@@ -10,7 +10,7 @@ const pages = [
   { hash: "#import-export", label: "Import / Export" },
 ];
 
-export default function HomePage() {
+export default function HomePage({ onLogOut }) {
   const [page, setPage] = useState(() => window.location.hash || "#home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [fileHistory, setFileHistory] = useState([]);
@@ -83,6 +83,7 @@ export default function HomePage() {
                     }}>{label}</a>
                 </li>
               ))}
+              <li><button type="button" onClick={onLogOut}>Log Out</button></li>
             </ul>
           </nav>
         </div>

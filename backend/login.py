@@ -29,6 +29,7 @@ class LoginResponse(BaseModel):
     token_type: str
     user_id: str
     role: str
+    expires_at: datetime
 
 
 def check_password(plain, stored_password):
@@ -47,21 +48,20 @@ def login(credentials: LoginRequest):
 
     try:
         # gets the account using the user_id
-        result = db.getData("account", "student_id", credentials.user_id)
+        # Select named columns: upgraded databases may have a different column order.
+        db.cursor.execute(
+            "SELECT student_id, passwords, acc_role, approved, expire_date "
+            "FROM account WHERE student_id = %s",
+            (credentials.user_id,),
+        )
+        account = db.cursor.fetchone()
 
         # checks if the account exists
-        if not result:
+        if not account:
             raise HTTPException(status_code=401, detail="Invalid ID or password.")
 
-        # gets the account information from the returned tuple
-        account = result[0]
-
         # gets the account attributes
-        user_id = account[0]
-        stored_password = account[4]
-        role = account[5]
-        approved = account[13]
-        expire_date = account[14]
+        user_id, stored_password, role, approved, expire_date = account
 
         # checks if the account has been approved
         if approved != "approved":
@@ -89,7 +89,8 @@ def login(credentials: LoginRequest):
             access_token=access_token,
             token_type="bearer",
             user_id=user_id,
-            role=role
+            role=role,
+            expires_at=expires_at,
         )
 
     finally:
@@ -117,6 +118,15 @@ def get_current_user(creds: HTTPAuthorizationCredentials = Depends(bearer_scheme
 
     except jwt.PyJWTError:
         raise HTTPException(status_code=401, detail="Invalid or expired token.")
+
+
+@router.get("/me")
+def current_user(user: dict = Depends(get_current_user)):
+    return {
+        "user_id": user["sub"],
+        "role": user["role"],
+        "expires_at": datetime.fromtimestamp(user["exp"], timezone.utc),
+    }
 
 
 # double function = reuse the same role-checking code for different roles
