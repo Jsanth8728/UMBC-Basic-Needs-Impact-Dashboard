@@ -30,7 +30,13 @@ export default defineConfig(({ command, mode }) => ({
     },
   },
   server: {
-    proxy: { "/api": "http://localhost:8000" },
+    proxy: {
+      "/api/login": {
+        target: "http://localhost:8000",
+        rewrite: path => path.replace(/^\/api\/login/, "/login"),
+      },
+      "/api": "http://localhost:8000",
+    },
   },
   build: {
     rolldownOptions: {

@@ -5,14 +5,14 @@ import LoginPage from "./pages/LoginPage.js";
 import "./styles/ReferenceTheme.css";
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
 
-  function logIn() {
+  function logIn(account) {
     window.location.hash = "#home";
-    setLoggedIn(true);
+    setUser(account);
   }
 
-  return loggedIn ? <HomePage /> : <LoginPage onLogIn={logIn} />;
+  return user ? <HomePage user={user} /> : <LoginPage onLogIn={logIn} />;
 }
 
 const root = createRoot(document.getElementById("root"));

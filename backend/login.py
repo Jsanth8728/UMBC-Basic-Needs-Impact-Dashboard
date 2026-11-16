@@ -53,15 +53,15 @@ def login(credentials: LoginRequest):
         if not result:
             raise HTTPException(status_code=401, detail="Invalid ID or password.")
 
-        # gets the account information from the returned tuple
-        account = result[0]
+        # Match values to column names; existing databases can have a different order.
+        account = dict(zip((column.name for column in db.cursor.description), result[0]))
 
         # gets the account attributes
-        user_id = account[0]
-        stored_password = account[4]
-        role = account[5]
-        approved = account[13]
-        expire_date = account[14]
+        user_id = account["student_id"]
+        stored_password = account["passwords"]
+        role = account["acc_role"]
+        approved = account["approved"]
+        expire_date = account["expire_date"]
 
         # checks if the account has been approved
         if approved != "approved":

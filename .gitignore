@@ -1,1 +1,18 @@
-/Front End/tests/
+# Test directories and test files
+tests/
+test/
+__tests__/
+test_*.py
+*_test.py
+*.test.*
+*.spec.*
+
+# Test caches and coverage reports
+.pytest_cache/
+.coverage
+.coverage.*
+coverage/
+htmlcov/
+test-results/
+playwright-report/
+__pycache__/
