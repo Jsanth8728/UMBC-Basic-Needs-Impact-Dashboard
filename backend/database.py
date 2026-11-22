@@ -54,12 +54,16 @@ class DBManager:
             print(f"Database insertion failed! Table: {table} Data: {data} Error:{e}")
             raise
     '''
-        Function to insert data into database table
+        Function to update data into database table
         Parameters:
             table is the name of the table (accounts, groups, meetings, etc) as a string
-            data is a dictionary containing column names and values in the form "column":"value"
+            data is a dictionary containing column names and values in the form "column":"value" that will contain the new values
+            pk is a dictionary containing the primary key of the query from the table, ex. for accounts: "student_id":"A001"
     '''
     def update(self, table, data, pk):
+        # Check if there is one and only one primary key listed
+        if len(pk) != 1:
+            raise ValueError("Exactly one primary key is required.")
         # taking the table attributes as col and the values as a list
         cols = data.keys()
         values = list(data.values())
