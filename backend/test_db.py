@@ -25,10 +25,11 @@ db.insert("account", {
 
 mock_cursor.execute.assert_called_once()
 print("Insert test passed!")
-
+# Test update()
+db.update("account", {"first_name": "NewName"},{"student_id": "A001"})
 # Test getData()
 mock_cursor.fetchall.return_value = [
-    ("A001", "John")
+    ("A001", "NewName")
 ]
 
 result = db.getData("account", "student_id", "A001")
@@ -38,5 +39,5 @@ print("\nDatabase Results:")
 for row in result:
     print(row)
 
-assert result == [("A001", "John")]
+assert result == [("A001", "NewName")]
 print("\ngetData test passed!")

@@ -53,6 +53,41 @@ class DBManager:
             self.connect.rollback()
             print(f"Database insertion failed! Table: {table} Data: {data} Error:{e}")
             raise
+    '''
+        Function to insert data into database table
+        Parameters:
+            table is the name of the table (accounts, groups, meetings, etc) as a string
+            data is a dictionary containing column names and values in the form "column":"value"
+    '''
+    def update(self, table, data, pk):
+        # taking the table attributes as col and the values as a list
+        cols = data.keys()
+        values = list(data.values())
+        primary_key = list(pk.keys())[0]
+        identifier = list(pk.values())[0]
+        # Create a string for which values to change
+        set_clause = sql.SQL(", ").join(
+        sql.SQL("{} = {}").format(
+            sql.Identifier(col),
+            sql.Placeholder())
+        for col in cols
+        )
+        # Formatting for update using an SQL update statement
+        query = sql.SQL("UPDATE {} SET {} WHERE {} = {}").format(
+            sql.Identifier(table),
+            set_clause,
+            sql.Identifier(primary_key),
+            sql.Placeholder()
+        )
+
+        # Attempting to update the specified table
+        try:
+            self.cursor.execute(query, values + [identifier])
+            self.connect.commit()
+        except psycopg2.Error as e:
+            self.connect.rollback()
+            print(f"Database update failed! Table: {table} Data: {data} Error: {e}")
+            raise
 
     '''
     Function to access/get info from database
