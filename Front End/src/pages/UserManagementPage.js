@@ -1,11 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import "./UserManagementPage.css";
 
-const roles = ["admin", "staff", "dean"];
+const roles = ["admin", "staff", "dean", "student"];
 const approvals = ["pending", "approved", "rejected"];
 const titleCase = value => value.charAt(0).toUpperCase() + value.slice(1);
 const dateFormat = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
-const blankUser = { id: "", firstName: "", lastName: "", email: "", role: "staff", department: "", approval: "pending", expires: "" };
+const blankUser = { id: "", username: "", password: "", firstName: "", lastName: "", email: "", role: "staff", department: "", approval: "approved", expires: "" };
+const api = async (path, options = {}) => {
+  const response = await fetch(`/api${path}`, { ...options, headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("access_token")}` } });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(Array.isArray(data.detail) ? data.detail.map(item => item.msg).join(", ") : data.detail || "Something went wrong.");
+  return data;
+};
+const fromApi = row => ({ id: row.student_id, firstName: row.first_name, lastName: row.last_name, email: row.email, role: row.acc_role, department: row.department ?? "", approval: row.approved, expires: row.expire_date.slice(0, 10) });
+const toApi = user => ({ first_name: user.firstName, last_name: user.lastName, email: user.email, department: user.department || null, acc_role: user.role, approved: user.approval, expire_date: `${user.expires}T23:59:59Z` });
 
 function UserEditor({ user, users, currentUserId, onSave, onClose }) {
   const dialogRef = useRef(null);
@@ -21,10 +29,10 @@ function UserEditor({ user, users, currentUserId, onSave, onClose }) {
     setDraft(previous => ({ ...previous, [event.target.name]: event.target.value }));
     setError("");
   }
-  function submit(event) {
+  async function submit(event) {
     event.preventDefault();
-    const next = Object.fromEntries(Object.entries(draft).map(([key, value]) => [key, value.trim()]));
-    if (![next.id, next.firstName, next.lastName, next.email, next.expires].every(Boolean)) {
+    const next = Object.fromEntries(Object.entries(draft).map(([key, value]) => [key, key === "password" ? value : value.trim()]));
+    if (![next.id, next.firstName, next.lastName, next.email, next.expires, ...(user ? [] : [next.username, next.password])].every(Boolean)) {
       setError("Complete all required fields.");
       return;
     }
@@ -36,7 +44,11 @@ function UserEditor({ user, users, currentUserId, onSave, onClose }) {
       setError("That email address is already in use.");
       return;
     }
-    onSave(next);
+    try {
+      await onSave(next);
+    } catch (saveError) {
+      setError(saveError.message);
+    }
   }
   return <dialog className="user-editor" ref={dialogRef} aria-labelledby="user-editor-title" onCancel={onClose}>
     <form onSubmit={submit}>
@@ -47,6 +59,7 @@ function UserEditor({ user, users, currentUserId, onSave, onClose }) {
         <label>First name<input name="firstName" value={draft.firstName} onChange={update} maxLength={100} required /></label>
         <label>Last name<input name="lastName" value={draft.lastName} onChange={update} maxLength={100} required /></label>
         <label className="user-form-wide">Email address<input name="email" type="email" value={draft.email} onChange={update} maxLength={255} required /></label>
+        {!user && <><label>Username<input name="username" value={draft.username} onChange={update} maxLength={100} required /></label><label>Password<input name="password" type="password" value={draft.password} onChange={update} maxLength={1024} autoComplete="new-password" required /></label></>}
         <label className="user-form-wide">Department <span className="user-optional">(optional)</span><input name="department" value={draft.department} onChange={update} maxLength={150} /></label>
         <label>Approval<select name="approval" value={draft.approval} onChange={update} disabled={isSelf}>{approvals.map(status => <option key={status} value={status}>{titleCase(status)}</option>)}</select></label>
         <label>Expiration date<input name="expires" type="date" value={draft.expires} onChange={update} required /></label>
@@ -63,19 +76,32 @@ export default function UserManagementPage({ users, onUsersChange, currentUserId
   const [approval, setApproval] = useState("all");
   const [editor, setEditor] = useState(null);
   const [message, setMessage] = useState("");
+  const [problem, setProblem] = useState("");
   const search = query.trim().toLowerCase();
   const filtered = users.filter(user => (role === "all" || user.role === role) && (approval === "all" || user.approval === approval) &&
     [user.id, `${user.firstName} ${user.lastName}`, user.email, user.department].some(value => value.toLowerCase().includes(search)));
   const filteredOut = query || role !== "all" || approval !== "all";
   function reset() { setQuery(""); setRole("all"); setApproval("all"); }
-  function save(user) {
-    onUsersChange(previous => editor.user ? previous.map(item => item.id === user.id ? user : item) : [...previous, user]);
-    setMessage(`${user.firstName} ${user.lastName} ${editor.user ? "updated" : "added"} for this session.`);
+  useEffect(() => {
+    api("/users").then(rows => onUsersChange(rows.map(fromApi))).catch(failure => setProblem(failure.message));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  async function save(user) {
+    const adding = !editor.user;
+    const row = await api(adding ? "/users" : `/users/${encodeURIComponent(user.id)}`, { method: adding ? "POST" : "PATCH", body: JSON.stringify(adding ? { ...toApi(user), student_id: user.id, username: user.username, password: user.password } : toApi(user)) });
+    const saved = fromApi(row);
+    onUsersChange(previous => adding ? [...previous, saved] : previous.map(item => item.id === saved.id ? saved : item));
+    setProblem("");
+    setMessage(`${saved.firstName} ${saved.lastName} ${adding ? "added" : "updated"}.`);
     setEditor(null);
   }
   function approve(user) {
-    onUsersChange(previous => previous.map(item => item.id === user.id ? { ...item, approval: "approved" } : item));
-    setMessage(`${user.firstName} ${user.lastName} approved for this session.`);
+    api(`/users/${encodeURIComponent(user.id)}`, { method: "PATCH", body: JSON.stringify({ approved: "approved" }) }).then(row => {
+      const saved = fromApi(row);
+      onUsersChange(previous => previous.map(item => item.id === saved.id ? saved : item));
+      setProblem("");
+      setMessage(`${saved.firstName} ${saved.lastName} approved.`);
+    }).catch(failure => setProblem(failure.message));
   }
   return <div className="user-management">
     <div className="user-page-heading"><h1>User Management</h1><button type="button" className="user-button user-button-gold" onClick={() => setEditor({ user: null })}><span aria-hidden="true">＋</span> Add user</button></div>
@@ -106,6 +132,7 @@ export default function UserManagementPage({ users, onUsersChange, currentUserId
       </div>
     </section>
     <p className="user-feedback" role="status">{message}</p>
+    {problem && <p className="user-form-error" role="alert">{problem}</p>}
     {editor && <UserEditor user={editor.user} users={users} currentUserId={currentUserId} onSave={save} onClose={() => setEditor(null)} />}
   </div>;
 }
