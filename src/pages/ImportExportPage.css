@@ -1,0 +1,379 @@
+﻿.transfer-heading {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  margin-bottom: 32px;
+  border-bottom: 5px solid var(--umbc-gold);
+  border-radius: 4px;
+  background: var(--umbc-black);
+  color: white;
+}
+
+.transfer-flag {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.transfer-heading::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(90deg, #000 15%, #000e 40%, #0003 100%);
+}
+
+.transfer-heading-text {
+  position: relative;
+  padding: 28px 32px;
+}
+
+.transfer-heading .page-eyebrow {
+  color: var(--umbc-gold);
+}
+
+.transfer-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.transfer-card {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid #dcdcdc;
+  border-top: 4px solid var(--umbc-gold);
+  border-radius: 4px;
+  background: white;
+}
+
+.transfer-card h2 {
+  margin: 0 0 16px;
+  font-size: 22px;
+  line-height: 1.3;
+}
+
+.transfer-workspace {
+  min-height: 150px;
+  border: 1px dashed #dcdcdc;
+  border-radius: 3px;
+  background: #fafafa;
+}
+
+.import-workspace {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.import-button {
+  min-height: 44px;
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 3px;
+  background: var(--umbc-gold);
+  color: var(--umbc-black);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.import-button:hover {
+  background: #e6a20d;
+}
+
+.import-file-hint,
+.import-file-status {
+  max-width: 100%;
+  margin: 12px 0 0;
+  color: var(--umbc-gray);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.import-file-status:empty {
+  display: none;
+}
+
+.file-history {
+  margin-top: 28px;
+}
+
+.file-history h2 {
+  margin-bottom: 8px;
+}
+
+.history-table-scroll {
+  overflow-x: auto;
+}
+
+.history-table-scroll:focus-visible {
+  outline: 3px solid var(--umbc-gold);
+  outline-offset: 3px;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+.history-table th,
+.history-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e5e5;
+  line-height: 1.5;
+}
+
+.history-table thead {
+  background: #f5f5f5;
+}
+
+.history-table time {
+  white-space: nowrap;
+}
+
+.history-filename {
+  min-width: 180px;
+  max-width: 360px;
+  overflow-wrap: anywhere;
+  font-weight: 400;
+}
+
+.history-format {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 3px;
+  background: #fff3d6;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.history-download {
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--umbc-black);
+  border-radius: 3px;
+  background: white;
+  color: var(--umbc-black);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.history-status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-processing {
+  color: #664800;
+  background: #fff0c2;
+}
+
+.status-review {
+  color: #00575b;
+  background: #e1f3f3;
+}
+
+.status-failed {
+  color: #a1141b;
+  background: #fce6e7;
+}
+
+.status-good {
+  color: #1a6238;
+  background: #e2f3e8;
+}
+
+.history-error {
+  display: block;
+  min-width: 150px;
+  max-width: 240px;
+  margin-top: 6px;
+  color: #a1141b;
+  font-size: 12px;
+}
+
+.history-download:hover {
+  background: var(--umbc-gold);
+}
+
+.history-empty {
+  text-align: center;
+  color: var(--umbc-gray);
+}
+
+.import-button:disabled {
+  background: #ddd;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.export-workspace {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 16px;
+}
+
+.export-controls {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.export-controls label {
+  display: flex;
+  flex: 1 1 120px;
+  min-width: 0;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.export-controls select {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid #999;
+  border-radius: 3px;
+  background: white;
+  color: black;
+  font: inherit;
+}
+
+.export-controls select:focus-visible {
+  outline: 3px solid var(--umbc-gold);
+  outline-offset: 2px;
+}
+
+.file-preview-dialog {
+  width: min(960px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  padding: 24px;
+  border: 0;
+  border-top: 5px solid var(--umbc-gold);
+  border-radius: 6px;
+  background: white;
+  color: var(--umbc-black);
+  box-shadow: 0 20px 80px #0005;
+  overflow: auto;
+}
+
+.file-preview-dialog::backdrop {
+  background: #0009;
+}
+
+.preview-heading h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.preview-heading p {
+  margin: 8px 0 20px;
+  color: var(--umbc-gray);
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.preview-sheet-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.preview-sheet-label select {
+  min-width: 0;
+  max-width: 100%;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid #999;
+  border-radius: 3px;
+  font: inherit;
+  background: white;
+  color: black;
+}
+
+.preview-limit {
+  margin: 16px 0 12px;
+  color: var(--umbc-gray);
+  font-size: 13px;
+}
+
+.preview-table-scroll {
+  max-height: 45dvh;
+  overflow: auto;
+  border: 1px solid #ddd;
+}
+
+.preview-table thead {
+  position: sticky;
+  top: 0;
+}
+
+.preview-table td {
+  min-width: 100px;
+  max-width: 280px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.preview-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.preview-table-scroll:focus-visible,
+.preview-sheet-label select:focus-visible {
+  outline: 3px solid var(--umbc-gold);
+  outline-offset: 2px;
+}
+
+@media (max-width: 760px) {
+  .transfer-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .transfer-heading-text {
+    padding: 32px 20px;
+  }
+
+  .transfer-heading::after {
+    background: linear-gradient(90deg, #000f, #0009);
+  }
+
+  .transfer-card {
+    padding: 20px;
+  }
+
+  .transfer-workspace {
+    min-height: 140px;
+  }
+
+  .file-preview-dialog {
+    padding: 20px 16px;
+  }
+
+  .preview-heading h2 {
+    font-size: 20px;
+  }
+}

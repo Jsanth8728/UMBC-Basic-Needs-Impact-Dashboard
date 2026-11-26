@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 import login
-# import role_management
+import role_management
 
 app = FastAPI()
 
@@ -23,7 +23,7 @@ app.add_middleware(
 )
 
 app.include_router(login.router)
-# app.include_router(role_management.router)
+app.include_router(role_management.router)
 
 
 @app.get("/health")

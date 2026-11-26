@@ -20,7 +20,7 @@ JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY")
 
 
 class LoginRequest(BaseModel):
-    user_id: str = Field(min_length=1, max_length=30)
+    user_id: str = Field(min_length=1, max_length=255)
     password: str = Field(min_length=1, max_length=1024)
 
 
@@ -46,22 +46,33 @@ def login(credentials: LoginRequest):
     db = DBManager()
 
     try:
-        # gets the account using the user_id
-        result = db.getData("account", "student_id", credentials.user_id)
+        # gets the account using the email, username, or student_id
+        login_input = credentials.user_id.strip()
+
+        # checks the email first
+        result = db.getData("account", "email", login_input)
+
+        # checks the username if the email was not found
+        if not result:
+            result = db.getData("account", "username", login_input)
+
+        # checks the student_id if the username was not found
+        if not result:
+            result = db.getData("account", "student_id", login_input)
 
         # checks if the account exists
         if not result:
-            raise HTTPException(status_code=401, detail="Invalid ID or password.")
+            raise HTTPException(status_code=401, detail="Invalid username or password.")
 
-        # Match values to column names; existing databases can have a different order.
-        account = dict(zip((column.name for column in db.cursor.description), result[0]))
+        # gets the account information from the returned tuple
+        account = result[0]
 
         # gets the account attributes
-        user_id = account["student_id"]
-        stored_password = account["passwords"]
-        role = account["acc_role"]
-        approved = account["approved"]
-        expire_date = account["expire_date"]
+        user_id = account[0]
+        stored_password = account[5]
+        role = account[6]
+        approved = account[14]
+        expire_date = account[15]
 
         # checks if the account has been approved
         if approved != "approved":
@@ -73,7 +84,7 @@ def login(credentials: LoginRequest):
 
         # checks if the password entered matches the stored_password
         if not check_password(credentials.password, stored_password):
-            raise HTTPException(status_code=401, detail="Invalid ID or password.")
+            raise HTTPException(status_code=401, detail="Invalid username or password.")
 
         # the token is valid for 8 hours, then the user must log in again
         expires_at = datetime.now(timezone.utc) + timedelta(hours=8)
@@ -109,7 +120,7 @@ def get_current_user(creds: HTTPAuthorizationCredentials = Depends(bearer_scheme
 
     try:
         # verifies the signature and expiration
-        return jwt.decode(
+        payload = jwt.decode(
             creds.credentials,
             JWT_SECRET_KEY,
             algorithms=["HS256"],
@@ -117,6 +128,26 @@ def get_current_user(creds: HTTPAuthorizationCredentials = Depends(bearer_scheme
 
     except jwt.PyJWTError:
         raise HTTPException(status_code=401, detail="Invalid or expired token.")
+
+    db = DBManager()
+
+    try:
+        result = db.getData("account", "student_id", payload.get("sub"))
+
+    finally:
+        db.close()
+
+    # checks if the account still exists
+    if not result:
+        raise HTTPException(status_code=401, detail="Invalid or expired token.")
+
+    expire_date = result[0][15]
+
+    # checks if the account has expired since the token was created
+    if expire_date <= datetime.now(timezone.utc):
+        raise HTTPException(status_code=403, detail="Account has expired.")
+
+    return payload
 
 
 # double function = reuse the same role-checking code for different roles

@@ -1,0 +1,61 @@
+.login-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 56px 20px 40px;
+  background: #f5ce63;
+  color: #000;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.2;
+}
+
+.login-container { width: 320px; max-width: 100%; margin: 0 auto; }
+.login-wordmark {
+  margin-bottom: 4px;
+  text-align: center;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 64px;
+  line-height: 1;
+  letter-spacing: -5px;
+  white-space: nowrap;
+}
+.login-wordmark-my { font-style: italic; letter-spacing: -6px; }
+.login-wordmark-umbc { color: #e51b23; }
+.login-card { padding: 20px; border-radius: 9px; background: #fff; }
+.login-heading-row { display: flex; align-items: baseline; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+.login-heading-row h1 { margin: 0; font: 700 28px/1.2 Arial, Helvetica, sans-serif; }
+.login-heading-row > span { font-size: 14px; }
+.login-link-text { color: #0074e8; }
+.login-card label { display: block; font-size: 14px; font-weight: 700; }
+.login-card input {
+  display: block;
+  width: 100%;
+  height: 33px;
+  margin: 0 0 8px;
+  padding: 4px 7px;
+  border: 1px solid #bcbcbc;
+  border-radius: 4px;
+  background: #f6f6f6;
+  color: #000;
+  font: 16px Arial, Helvetica, sans-serif;
+}
+.login-card input:focus-visible { outline: 2px solid #333; outline-offset: 0; }
+.login-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; font-size: 14px; }
+.login-actions button {
+  padding: 7px 16px;
+  border: 0;
+  border-radius: 3px;
+  background: #64a943;
+  color: #fff;
+  font: 700 16px/1.2 Arial, Helvetica, sans-serif;
+  cursor: pointer;
+}
+.login-actions button:hover { background: #508936; }
+.login-actions button:focus-visible { outline: 2px solid #1b4c12; outline-offset: 3px; }
+.login-notice { margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; }
+.login-logout-reminder { margin: 0 0 12px; color: #d93636; font-size: 16px; font-weight: 700; }
+.login-logout-reminder > span { display: block; font-size: 12px; }
+.login-policy { margin: 0; color: #666; font-size: 11px; }
+
+@media (max-width: 400px) {
+  .login-page { padding: 36px 16px; }
+}

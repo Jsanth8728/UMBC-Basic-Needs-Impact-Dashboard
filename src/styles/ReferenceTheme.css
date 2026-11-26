@@ -1,0 +1,144 @@
+/* Visual theme adapted from the user's desktop.html reference.
+   Keep layout and interaction rules in their existing component stylesheets. */
+:root {
+  --font-heading: Georgia, "Times New Roman", serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --umbc-red: #da2128;
+  --umbc-gray: #4d4d4d;
+  --theme-line: #cfcfcf;
+  --theme-wash: #f4f4f4;
+  font-family: var(--font-body);
+  background: #fff;
+}
+
+body { font-family: var(--font-body); line-height: 1.45; }
+button, input, select, textarea { font-family: inherit; }
+h1, h2, h3 { font-family: var(--font-heading); }
+h1 { font-size: 34px; line-height: 1.15; }
+h2 { font-size: 22px; }
+
+.home-page-header { border-bottom-width: 4px; }
+.home-page-header .header-image { opacity: 0; }
+.header-text { max-width: 1160px; min-height: 74px; padding: 12px 32px; }
+.UMBC-logo { height: 46px; width: auto; max-width: 100%; object-fit: contain; }
+.menu-button { border-radius: 6px; background: transparent; color: var(--umbc-gold); }
+.menu-button:hover, .menu-button[aria-expanded="true"] { background: var(--umbc-gold); color: var(--umbc-black); }
+.page-content { max-width: 1160px; padding: 32px; }
+
+.impact-dashboard { font-family: var(--font-body); color: var(--umbc-black); }
+.impact-dashboard h1 { font-family: var(--font-heading); font-size: 34px; letter-spacing: normal; line-height: 1.15; }
+.impact-dashboard h2 { font-family: var(--font-heading); font-size: 22px; letter-spacing: normal; }
+.dashboard-heading { margin-bottom: 24px; }
+.dashboard-stats, .dashboard-charts { gap: 20px; }
+.dashboard-panel, .dashboard-filters, .transfer-card, .file-history {
+  border: 2px solid var(--umbc-black);
+  border-radius: 8px;
+  background: white;
+}
+.dashboard-panel-heading { padding: 20px; flex-wrap: wrap; }
+.dashboard-filters { padding: 20px; gap: 16px; flex-wrap: wrap; }
+.dashboard-filters label:first-child { min-width: 180px; }
+.dashboard-stat, .dashboard-stat.dark-stat {
+  border: 2px solid var(--umbc-black);
+  border-top: 8px solid var(--umbc-gold);
+  border-radius: 8px;
+  padding: 16px 20px;
+  background: #fff;
+  color: var(--umbc-black);
+}
+.stat-label, .dark-stat .stat-label { font-size: 14px; font-weight: 600; color: var(--umbc-gray); }
+.dashboard-stat > strong { font-family: var(--font-heading); font-size: clamp(34px, 4vw, 52px); line-height: 1; margin: 12px 0 6px; letter-spacing: normal; overflow-wrap: anywhere; }
+.dashboard-filters label, .month-picker-label { font-size: 14px; font-weight: 600; color: var(--umbc-black); }
+.dashboard-filters select, .dashboard-filters input, .measure-control select,
+.export-controls select, .preview-sheet-label select {
+  min-height: 44px;
+  border: 2px solid var(--umbc-black);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: var(--umbc-black);
+  background: white;
+}
+.measure-control select { max-width: 240px; }
+.impact-dashboard .dashboard-button, .comparison-legend button, .history-download, .import-button {
+  border: 2px solid var(--umbc-black);
+  border-radius: 6px;
+  min-height: 44px;
+  padding: 8px 12px;
+  font-size: 14px !important;
+  font-weight: 700;
+  color: var(--umbc-black);
+  background: white;
+  box-shadow: none;
+}
+.impact-dashboard .dashboard-button:hover:not(:disabled), .comparison-legend button:hover,
+.history-download:hover, .import-button:hover:not(:disabled) { background: var(--umbc-gold); border-color: var(--umbc-black); }
+.import-button { background: var(--umbc-gold); }
+.dashboard-reset { font-size: 14px !important; min-height: 44px; color: var(--umbc-black); }
+.dashboard-trend text { font-family: var(--font-body); font-size: 13px; fill: var(--umbc-gray); }
+.dashboard-empty, .distribution-empty, .stories-empty, .comparison-empty { font-size: 14px; color: var(--umbc-gray); }
+.department-row > div:first-child { font-size: 14px; }
+.department-track { height: 10px; background: var(--theme-wash); border: 1px solid var(--theme-line); }
+.comparison-legend { gap: 12px; padding: 0 20px 12px; }
+.comparison-legend button[aria-pressed="false"] { background: var(--theme-wash); color: var(--umbc-gray); border-color: var(--theme-line); font-weight: 400; }
+.comparison-legend button span { width: 14px; height: 14px; border: 1px solid var(--umbc-black); border-radius: 0; }
+.comparison-data { border-top-color: var(--theme-line); font-size: 14px; }
+.comparison-data th, .comparison-data td { padding: 10px 12px; border-bottom-color: var(--theme-line); }
+.comparison-data thead th, .history-table thead th { color: white; background: var(--umbc-black); font-weight: 600; }
+.comparison-data tbody th { font-weight: 600; }
+.comparison-data tbody tr:nth-child(even), .history-table tbody tr:nth-child(even) { background: var(--theme-wash); }
+.dashboard-stories { padding: 0 20px 20px; gap: 20px; }
+.dashboard-stories figure { background: var(--theme-wash); border-left: 6px solid var(--umbc-gold); border-radius: 6px; }
+.dashboard-stories blockquote { font-family: var(--font-heading); font-size: 18px; }
+.dashboard-stories figcaption { font-size: 13px; color: var(--umbc-gray); }
+
+.month-picker-control { border: 2px solid var(--umbc-black); border-radius: 6px; }
+.month-picker .month-picker-trigger { min-height: 44px; font-size: 14px; }
+.month-picker .month-picker-arrow { min-height: 44px; }
+.month-picker-calendar { border: 2px solid var(--umbc-black); border-top: 6px solid var(--umbc-gold); border-radius: 8px; }
+.month-picker .month-picker-year input { font-family: var(--font-heading); font-size: 20px; }
+.month-picker-months button, .month-picker-footer button { font-size: 14px; min-height: 44px; }
+.month-picker button:hover:not(:disabled) { background: var(--umbc-gold); }
+.month-picker-footer { border-top-color: var(--theme-line); }
+
+.transfer-heading { color: var(--umbc-black); background: white; border: 0; border-radius: 0; }
+.transfer-heading .transfer-flag, .transfer-heading::after { display: none; }
+.transfer-heading-text { padding: 0; }
+.transfer-heading .page-eyebrow { color: var(--umbc-gray); }
+.transfer-layout { gap: 20px; }
+.transfer-workspace { border: 2px dashed var(--umbc-black); border-radius: 8px; background: var(--theme-wash); }
+.file-history { padding: 20px; }
+.history-table th, .history-table td { border-bottom-color: var(--theme-line); }
+.history-format, .history-status { border: 2px solid var(--umbc-black); border-radius: 999px; }
+.file-preview-dialog { border: 2px solid var(--umbc-black); border-top: 6px solid var(--umbc-gold); font-family: var(--font-body); }
+
+:is(a, button, input, select, summary):focus-visible,
+.impact-dashboard :is(select, input, button):focus-visible,
+.comparison-data summary:focus-visible,
+.history-table-scroll:focus-visible, .preview-table-scroll:focus-visible,
+.preview-sheet-label select:focus-visible, .export-controls select:focus-visible {
+  outline: 3px solid var(--umbc-red);
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .header-text { min-height: 72px; padding: 12px 20px; }
+  .UMBC-logo { height: 38px; }
+  .page-content { padding: 24px 20px; }
+  .impact-dashboard h1 { font-size: 30px; }
+  .impact-dashboard h2 { font-size: 20px; }
+  .dashboard-stats { gap: 12px; }
+  .dashboard-stat, .dashboard-stat.dark-stat { padding: 16px 12px; }
+  .dashboard-stat > strong { font-size: 34px; }
+  .stat-label { font-size: 13px; }
+  .dashboard-filters { padding: 16px; gap: 12px; }
+  .month-picker .month-picker-trigger { font-size: 12px; }
+  .dashboard-panel-heading { padding: 16px; }
+  .dashboard-stories { padding: 0 16px 16px; }
+  .comparison-legend { padding: 0 16px 12px; }
+  .file-history { padding: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
